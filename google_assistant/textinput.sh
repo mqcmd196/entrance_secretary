@@ -1,0 +1,1 @@
+python3 textinput.py --device-id "KI000XX" --device-model-id "ThinkPadL480" --lang "ja-JP"
