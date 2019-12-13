@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # Copyright (C) 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,7 +47,7 @@ DEFAULT_GRPC_DEADLINE = 60 * 3 + 5
 PLAYING = embedded_assistant_pb2.ScreenOutConfig.PLAYING
 
 
-class SampleTextAssistant(object):
+class TextToTalkAssistant(object):
     """Sample Assistant that supports text based conversations.
     Args:
       language_code: language for the conversation.
@@ -121,7 +120,7 @@ class SampleTextAssistant(object):
                 conversation_state = resp.dialog_state_out.conversation_state
                 self.conversation_state = conversation_state
             if resp.dialog_state_out.supplemental_display_text:
-                text_response = resp.dialog_state_out.supplemental_display_text
+                text_response = resp.dialog_state_out.supplemenstal_display_text
         return text_response, html_response
 
 
@@ -181,7 +180,7 @@ def main(api_endpoint, credentials,
         credentials, http_request, api_endpoint)
     logging.info('Connecting to %s', api_endpoint)
 
-    with SampleTextAssistant(lang, device_model_id, device_id, display,
+    with TextToTalkAssistant(lang, device_model_id, device_id, display,
                              grpc_channel, grpc_deadline) as assistant:
         while True:
             query = click.prompt('')
