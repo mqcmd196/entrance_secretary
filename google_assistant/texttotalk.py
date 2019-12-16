@@ -124,8 +124,8 @@ class SampleAssistant(object):
         continue_conversation = False
         device_actions_futures = []
 
-        self.conversation_stream.start_recording()
-        logging.info('Recording audio request.')
+        # self.conversation_stream.start_recording()
+        # logging.info('Recording audio request.')
 
         def iter_log_assist_requests():
             for c in self.gen_assist_requests(text_query):
@@ -138,10 +138,10 @@ class SampleAssistant(object):
         for resp in self.assistant.Assist(iter_log_assist_requests(),
                                           self.deadline):
             assistant_helpers.log_assist_response_without_audio(resp)
-            if resp.event_type == END_OF_UTTERANCE:
-                logging.info('End of audio request detected.')
-                logging.info('Stopping recording.')
-                self.conversation_stream.stop_recording()
+            # if resp.event_type == END_OF_UTTERANCE:
+                # logging.info('End of audio request detected.')
+                # logging.info('Stopping recording.')
+                # self.conversation_stream.stop_recording()
             if resp.speech_results:
                 logging.info('Transcript of user request: "%s".',
                              ' '.join(r.transcript
