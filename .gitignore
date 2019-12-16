@@ -1,2 +1,3 @@
+/**/*.pyc
 google_assistant/**/*.json
-google_assistnt/**/*.pyc
+google_assistant/**/*.pyc

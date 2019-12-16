@@ -329,6 +329,90 @@ class ConversationStream(object):
         return self._source._sample_rate
 
 
+class SpeakingBackStream(object):
+    # TEST CLASS. DON'T USE IT.
+    """Speaking back stream that supports text->voice conversation.
+    A speakingback is the alternance of:
+    - a playback operation
+    Excepted usage:
+      For each conversation:
+      - start_playback()
+      - write()
+      - stop_playback()
+      When conversations are finished:
+      - close()
+    Args:
+      source: file-like stream object to read input audio bytes from.
+      sink: file-like stream object to write output audio bytes to.
+      iter_size: read size in bytes for each iteration.
+      sample_width: size of a single sample in bytes.
+    """
+    def __init__(self, source, sink, iter_size, sample_width):
+        self._source = source
+        self._sink = sink
+        self._iter_size = iter_size
+        self._sample_width = sample_width
+        self._volume_percentage = 50
+        # self._stop_recording = threading.Event()
+        self._source_lock = threading.RLock()
+        # self._recording = False
+        self._playing = False
+
+    def start_playback(self):
+        """Start playback to the audio sink."""
+        self._playing = True
+        self._sink.start()
+
+    def stop_playback(self):
+        """Stop playback from the audio sink."""
+        self._sink.flush()
+        self._sink.stop()
+        self._playing = False
+
+
+    @property
+    def playing(self):
+        return self._playing
+
+    @property
+    def volume_percentage(self):
+        """The current volume setting as an integer percentage (1-100)."""
+        return self._volume_percentage
+
+    @volume_percentage.setter
+    def volume_percentage(self, new_volume_percentage):
+        self._volume_percentage = new_volume_percentage
+
+    def read(self, size):
+        """Read bytes from the source (if currently recording).
+        """
+        with self._source_lock:
+            return self._source.read(size)
+
+    def write(self, buf):
+        """Write bytes to the sink (if currently playing).
+        """
+        buf = align_buf(buf, self._sample_width)
+        buf = normalize_audio_buffer(buf, self.volume_percentage)
+        return self._sink.write(buf)
+
+    def close(self):
+        """Close source and sink."""
+        self._source.close()
+        self._sink.close()
+
+    def __iter__(self):
+        """Returns a generator reading data from the stream."""
+        while True:
+            if self._stop_recording.is_set():
+                return
+            yield self.read(self._iter_size)
+
+    @property
+    def sample_rate(self):
+        return self._source._sample_rate
+
+
 @click.command()
 @click.option('--record-time', default=5,
               metavar='<record time>', show_default=True,
