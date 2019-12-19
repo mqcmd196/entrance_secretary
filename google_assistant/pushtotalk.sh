@@ -1,1 +1,1 @@
-python3 pushtotalk.py --device-id "KI00095" --device-model-id "ThinkPadL480" --lang "ja-JP"
+python3 pushtotalk.py --device-id "Pi" --device-model-id "RaspberryPi4" --lang "ja-JP"

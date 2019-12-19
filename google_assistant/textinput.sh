@@ -1,1 +1,1 @@
-python3 textinput.py --device-id "KI000XX" --device-model-id "ThinkPadL480" --lang "ja-JP"
+python3 textinput.py --device-id "Pi" --device-model-id "RaspberryPi4" --lang "ja-JP"
