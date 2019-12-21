@@ -1,5 +1,4 @@
 from edgetpu.classification.engine import ClassificationEngine
-import edgetpu.classification.engine
 from PIL import Image
 import cv2
 import re
