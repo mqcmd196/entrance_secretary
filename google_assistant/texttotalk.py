@@ -38,6 +38,9 @@ from google.assistant.embedded.v1alpha2 import (
 )
 from tenacity import retry, stop_after_attempt, retry_if_exception
 
+# to be able to execute in another directory
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 try:
     from . import (
         assistant_helpers,
@@ -440,7 +443,7 @@ def main(api_endpoint, credentials, project_id,
         # and playing back assistant response using the speaker.
         # When the once flag is set, don't wait for a trigger. Otherwise, wait.
         wait_for_user_trigger = not once
-        assistanttext = open("assistanttext.txt", "r")
+        assistanttext = open("./assistanttext.txt", "r")
 
         # while True:
             #if wait_for_user_trigger:
